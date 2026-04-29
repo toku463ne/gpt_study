@@ -78,3 +78,6 @@ tensor([[[ 0.1380,  0.0079, -0.1958,  ..., -0.0223, -0.1062,  0.1717],
     """
     Total number of parameters: 163,009,536
     """
+
+    for name, param in model.named_parameters():
+        print(f"Name: {name:30} | Shape: {str(list(param.shape)):20}")
