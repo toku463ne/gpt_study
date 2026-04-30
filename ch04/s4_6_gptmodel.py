@@ -34,13 +34,24 @@ class GPTModel(nn.Module):
     def forward(self, in_idx):
         batch_size, seq_len = in_idx.shape
         tok_embeds = self.tok_emb(in_idx)
+        # [2, 4, 768]
 
         pos_embeds = self.pos_emb(torch.arange(seq_len, device=in_idx.device))
+        # torch.arange(seq_len, device=in_idx.device) will return 0, 1, ..., seq_len-1 with the same device as in_idx
+        # [4, 768]
+        
         x = tok_embeds + pos_embeds
+        # broadcasting to all tokens in the batch
+        # [2, 4, 768]
+        
         x = self.drop_emb(x)
         x = self.trf_blocks(x)
         x = self.final_norm(x)
+        # [2, 4, 768]
+
         logits = self.out_head(x)
+        # [2, 4, 50257]
+
         return logits
     
 
